@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GG Games</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="blur-panel">
+    <h1>All projects "GG Games"</h1>
+  </div>
+  
+	<div class="choose-container">
+		<button class="choose-btn" onclick="openModal()">Choose the Game</button>
+	</div>
+
+	<div id="gameModal" class="modal">
+	  <div class="modal-content">
+		<h2>Select a Game</h2>
+		<a href="mysatsuma.html" class="game-option">My Satsuma (Paused)</a>
+    <a href="mscport.html" class="game-option">My Summer Car Mobile Port</a>
+		<button class="game-option">???</button>
+	  </div>
+	</div>
+
+<script>
+  const modal = document.getElementById('gameModal');
+
+  function openModal() {
+    modal.classList.add('visible');
+  }
+
+  function closeModal() {
+    modal.classList.remove('visible');
+  }
+
+  window.addEventListener('click', function (e) {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+</script>
+
+</body>
+</html>
