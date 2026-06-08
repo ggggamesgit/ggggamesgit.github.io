@@ -407,8 +407,25 @@
             .container { padding: 10px; }
             .game-details { padding: 16px; }
             .game-details h1 { font-size: 22px; }
-            .thumbnails img { width: calc(33.33% - 7px); min-width: auto; }
-            .video-thumb { width: calc(33.33% - 7px); min-width: auto; }
+            
+            .thumbnails {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            
+            .thumbnails img {
+                width: 100%;
+                min-width: auto;
+                aspect-ratio: 16/9;
+            }
+            
+            .video-thumb {
+                width: 100%;
+                min-width: auto;
+                aspect-ratio: 16/9;
+            }
+            
             .main-screenshot .game-title-overlay h2 { font-size: 18px; }
             .header { padding: 10px 14px; }
             .logo { font-size: 20px; }
