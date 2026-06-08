@@ -1,29 +1,661 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Satsuma</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Satsuma — GGGames</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1b2838;
+            color: #c7d5e0;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #171a21;
+            padding: 12px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #2a475e;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #c7d5e0;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo:hover { color: #fff; }
+
+        .logo-img {
+            height: 52px;
+            width: auto;
+            flex-shrink: 0;
+        }
+
+        .back-link {
+            color: #8f98a0;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: background 0.15s, color 0.15s;
+            background: #1b2838;
+        }
+
+        .back-link:hover { background: #2a475e; color: #66c0f4; }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .socials {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .socials a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 6px;
+            background: #1b2838;
+            transition: background 0.2s, transform 0.2s;
+            text-decoration: none;
+        }
+
+        .socials a:hover {
+            background: #2a475e;
+            transform: translateY(-2px);
+        }
+
+        .socials a img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 2px;
+            background: #1b2838;
+            border-radius: 6px;
+            padding: 3px;
+        }
+
+        .lang-switch button {
+            background: transparent;
+            border: none;
+            color: #8f98a0;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .lang-switch button.active { background: #2a475e; color: #66c0f4; }
+        .lang-switch button:hover { color: #fff; }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .game-details {
+            background: #16202d;
+            border-radius: 6px;
+            padding: 30px;
+        }
+
+        .game-details h1 {
+            font-size: 32px;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .game-details .developer {
+            color: #66c0f4;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .main-screenshot {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            border: 1px solid #2a475e;
+        }
+
+        .main-screenshot img {
+            width: 100%;
+            display: block;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+
+        .main-screenshot .game-title-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 30px 24px 18px;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
+            width: 100%;
+        }
+
+        .main-screenshot .game-title-overlay h2 {
+            color: #fff;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        }
+
+        .thumbnails {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .thumbnails img {
+            width: calc(20% - 8px);
+            min-width: 100px;
+            flex: 1;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            object-fit: cover;
+            aspect-ratio: 16/9;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .thumbnails img:hover { border-color: #66c0f4; transform: translateY(-2px); }
+        .thumbnails img.active-thumb { border-color: #66c0f4; box-shadow: 0 0 12px rgba(102, 192, 244, 0.4); }
+
+        .description {
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 15px;
+            color: #acb4bc;
+        }
+
+        .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .tag {
+            background: #2a475e;
+            padding: 4px 12px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: #66c0f4;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .info-item {
+            background: #1b2838;
+            padding: 14px;
+            border-radius: 6px;
+        }
+
+        .info-item .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #8f98a0;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        .info-item .value {
+            font-size: 14px;
+            color: #c7d5e0;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #5c7e10, #4a6b0d);
+            color: #d2efa9;
+            padding: 12px 30px;
+            font-size: 17px;
+            font-weight: 600;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+            margin-bottom: 30px;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(135deg, #6d9216, #5a7e11);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 14px;
+            border-bottom: 1px solid #2a475e;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+
+        .section-title:first-of-type { margin-top: 0; }
+
+        .changelog-item {
+            background: #1b2838;
+            padding: 14px 18px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border-left: 3px solid #66c0f4;
+        }
+
+        .changelog-item .version {
+            font-weight: 600;
+            color: #66c0f4;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .changelog-item .text {
+            font-size: 14px;
+            color: #acb4bc;
+            line-height: 1.5;
+        }
+
+        .features-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .features-list li {
+            background: #1b2838;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #acb4bc;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features-list li::before {
+            content: "✔";
+            color: #66c0f4;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .system-req-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .system-req-col {
+            background: #1b2838;
+            padding: 16px;
+            border-radius: 6px;
+        }
+
+        .system-req-col h4 {
+            color: #8f98a0;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .system-req-col ul {
+            list-style: none;
+            font-size: 13px;
+            color: #acb4bc;
+            line-height: 1.8;
+        }
+
+        .system-req-col ul li span {
+            color: #8f98a0;
+        }
+
+        .video-thumb {
+            width: calc(20% - 8px);
+            min-width: 100px;
+            flex: 1;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            aspect-ratio: 16/9;
+            transition: border-color 0.2s, transform 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-thumb:hover { border-color: #66c0f4; transform: translateY(-2px); }
+        .video-thumb.active-thumb { border-color: #66c0f4; box-shadow: 0 0 12px rgba(102, 192, 244, 0.4); }
+
+        .video-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            pointer-events: none;
+            transition: background 0.2s;
+        }
+
+        .video-thumb:hover .play-icon { background: rgba(0, 0, 0, 0.85); }
+
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .game-details { padding: 16px; }
+            .game-details h1 { font-size: 22px; }
+            .thumbnails img { width: calc(33.33% - 7px); min-width: auto; }
+            .video-thumb { width: calc(33.33% - 7px); min-width: auto; }
+            .main-screenshot .game-title-overlay h2 { font-size: 18px; }
+            .header { padding: 10px 14px; }
+            .logo { font-size: 20px; }
+            .logo-img { height: 36px; }
+            .socials a { width: 28px; height: 28px; }
+            .socials a img { width: 16px; height: 16px; }
+            .play-icon { width: 30px; height: 30px; font-size: 14px; }
+            .system-req-grid { grid-template-columns: 1fr; }
+            .features-list { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: 1fr 1fr; }
+            .back-link { font-size: 12px; padding: 6px 10px; }
+            .header-left { gap: 10px; }
+        }
+    </style>
 </head>
-<body class="blur-background">
-  <div class="game-header">
-    <h1>My Satsuma</h1>
-  </div>
+<body>
 
-  <div class="overview-section">
-    <h2>Review</h2>
-    <div class="screenshot-gallery">
-      <img src="img/mysatsuma/img1.jpg" alt="Screenshot 1" />
-      <img src="img/mysatsuma/img2.jpg" alt="Screenshot 2" />
-      <img src="img/mysatsuma/img3.jpg" alt="Screenshot 3" />
+    <header class="header">
+        <div class="header-left">
+            <a class="logo">
+                <img src="logo/logoMS.png" alt="GG Games" class="logo-img">
+                GGGames
+            </a>
+            <a href="index.html" class="back-link" data-ru="← В каталог" data-en="← Back to catalog">← В каталог</a>
+        </div>
+        <div class="header-right">
+            <div class="lang-switch">
+                <button class="active" onclick="setLang('ru')">🇷🇺 RU</button>
+                <button onclick="setLang('en')">🇬🇧 EN</button>
+            </div>
+            <div class="socials">
+                <a href="https://youtube.com/@gg_games-p3f" target="_blank" title="YouTube">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg" alt="YouTube" style="filter: invert(1);">
+                </a>
+                <a href="https://t.me/GGTechGamesTG" target="_blank" title="Telegram">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/telegram.svg" alt="Telegram" style="filter: invert(1);">
+                </a>
+                <a href="https://tiktok.com/@gg.games38" target="_blank" title="TikTok">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/tiktok.svg" alt="TikTok" style="filter: invert(1);">
+                </a>
+                <a href="https://trashbox.ru/users/ggtechgames/" target="_blank" title="TrashBox">
+                    <img src="TrashBox.webp" alt="TrashBox">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <main class="game-details">
+            <h1>My Satsuma</h1>
+            <p class="developer" data-ru="Разработчик: GGGames" data-en="Developer: GGGames">Разработчик: GGGames</p>
+
+            <!-- ГЛАВНЫЙ ЭКРАН -->
+            <div class="main-screenshot" id="mainDisplay">
+                <img src="games/image_mysatsuma/image1.jpg" alt="My Satsuma" id="mainImg">
+                <div class="game-title-overlay">
+                    <h2>My Satsuma</h2>
+                </div>
+            </div>
+
+            <!-- МИНИАТЮРЫ -->
+            <div class="thumbnails">
+                <div class="video-thumb" onclick="changeMain(this, 'video')" data-type="video" data-video-id="nI76X2B7JK4">
+                    <img src="https://img.youtube.com/vi/nI76X2B7JK4/mqdefault.jpg" alt="Видео">
+                    <div class="play-icon">▶</div>
+                </div>
+                <img src="games/image_mysatsuma/image1.jpg" onclick="changeMain(this, 'image')" class="active-thumb" data-type="image">
+                <img src="games/image_mysatsuma/image2.jpg" onclick="changeMain(this, 'image')" data-type="image">
+                <img src="games/image_mysatsuma/image3.jpg" onclick="changeMain(this, 'image')" data-type="image">
+                <img src="games/image_mysatsuma/image4.jpg" onclick="changeMain(this, 'image')" data-type="image">
+                <img src="games/image_mysatsuma/image5.jpg" onclick="changeMain(this, 'image')" data-type="image">
+            </div>
+
+            <!-- ОПИСАНИЕ -->
+            <p class="description" data-ru="My Satsuma -это модификация для игры PickUp, которая пытается воссоздать карту, атмосферу, механики и геймплей My Summer Car. Работайте на разных работах, покупайте новые запчасти, принимайте душ и во время ложитесь спать, чтобы не уснуть за рулём по пути к механику." data-en="My Satsuma is a modification for PickUp that attempts to recreate the map, atmosphere, mechanics, and gameplay of My Summer Car. Work various jobs, buy new parts, shower, and go to bed on time to avoid falling asleep at the wheel on the way to the mechanic.">My Satsuma -это модификация для игры PickUp, которая пытается воссоздать карту, атмосферу, механики и геймплей My Summer Car. Работайте на разных работах, покупайте новые запчасти, принимайте душ и во время ложитесь спать, чтобы не уснуть за рулём по пути к механику.</p>
+
+            <!-- ИНФО-СЕТКА -->
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label" data-ru="Жанр" data-en="Genre">Жанр</div>
+                    <div class="value" data-ru="Симулятор, Выживание" data-en="Simulator, Survival">Симулятор, Выживание</div>
+                </div>
+                <div class="info-item">
+                    <div class="label" data-ru="Платформа" data-en="Platform">Платформа</div>
+                    <div class="value" data-ru="Android" data-en="Android">Android</div>
+                </div>
+                <div class="info-item">
+                    <div class="label" data-ru="Версия" data-en="Version">Версия</div>
+                    <div class="value">3.7.1 Beta</div>
+                </div>
+                <div class="info-item">
+                    <div class="label" data-ru="Язык" data-en="Language">Язык</div>
+                    <div class="value" data-ru="Русский, English" data-en="Russian, English">Русский, English</div>
+                </div>
+            </div>
+
+            <!-- ТЕГИ -->
+            <div class="tags"> 
+                <span class="tag" data-ru="Симулятор" data-en="Simulator">Симулятор</span>
+                <span class="tag" data-ru="Автосимулятор" data-en="Car simulator">Автосимулятор</span>
+                <span class="tag" data-ru="Открытый мир" data-en="Open world">Открытый мир</span>
+                <span class="tag" data-ru="Вождение" data-en="Driving">Вождение</span>
+                <span class="tag" data-ru="Выживание" data-en="Survival">Выживание</span>
+            </div>
+
+            <!-- СИСТЕМНЫЕ ТРЕБОВАНИЯ -->
+            <h3 class="section-title" data-ru="📱 Системные требования" data-en="📱 System Requirements">📱 Системные требования</h3>
+            <div class="system-req-grid">
+                <div class="system-req-col">
+                    <h4 data-ru="Минимальные" data-en="Minimum">Минимальные</h4>
+                    <ul>
+                        <li><span data-ru="CPU:" data-en="CPU:">CPU:</span> Snapdragon 685</li>
+                        <li><span data-ru="ARM:" data-en="ARM:">ARM:</span> ARMv7/ARM64</li>
+                        <li><span data-ru="ОЗУ:" data-en="RAM:">ОЗУ:</span> 6 GB</li>
+                        <li><span data-ru="Память:" data-en="Storage:">Память:</span> 1 GB</li>
+                    </ul>
+                </div>
+                <div class="system-req-col">
+                    <h4 data-ru="Рекомендуемые" data-en="Recommended">Рекомендуемые</h4>
+                    <ul>
+                        <li><span data-ru="CPU:" data-en="CPU:">CPU:</span> Snapdragon 695</li>
+                        <li><span data-ru="ARM:" data-en="ARM:">ARM:</span> ARMv7/ARM64</li>
+                        <li><span data-ru="ОЗУ:" data-en="RAM:">ОЗУ:</span> 8 GB</li>
+                        <li><span data-ru="Память:" data-en="Storage:">Память:</span> 1 GB</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- КНОПКА СКАЧАТЬ -->
+             <a href="https://t.me/GGTechGamesTG/509" class="download-btn" download data-ru="⬇ Скачать игру (Telegram)" data-en="⬇ Download Game (Telegram)">⬇ Скачать игру (Telegram)</a>
+            <a href="https://trashbox.ru/link/my-satsuma-android" class="download-btn" download data-ru="⬇ Скачать игру (TrashBox)" data-en="⬇ Download Game (TrashBox)">⬇ Скачать игру (TrashBox)</a>
+
+            <!-- ЧТО НОВОГО -->
+            <h3 class="section-title" data-ru="📝 Что нового?" data-en="📝 What's New?">📝 Что нового?</h3>
+            <div class="changelog">
+                <div class="changelog-item">
+                    <div class="version" data-ru="Версия 3.7.1 — 15 июня 2025" data-en="Version 3.7.1 — June 15, 2025">Версия 3.7.1 — 15 июня 2025</div>
+                     <!--<div class="text" data-ru="Добавлена новая карта «Промзона», исправлены баги с физикой, улучшена оптимизация." data-en="Added new map 'Industrial Zone', fixed physics bugs, improved optimization.">Добавлена новая карта «Промзона», исправлены баги с физикой, улучшена оптимизация.</div>-->
+                </div>
+                <div class="changelog-item">
+                    <div class="version" data-ru="Версия 3.7.0 — 14 июня 2025" data-en="Version 3.7.0 — June 14, 2025">Версия 3.7.0 — 14 июня 2025</div>
+                    <!--<div class="text" data-ru="Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске." data-en="Improved graphics, added new tuning parts, fixed crash on startup.">Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске.</div>-->
+                </div>
+                <div class="changelog-item">
+                    <div class="version" data-ru="Версия 3.6.3 — 25 мая 2025" data-en="Version 3.6.3 — May 25, 2025">Версия 3.6.3 — 25 мая 2025</div>
+                    <!--<div class="text" data-ru="Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске." data-en="Improved graphics, added new tuning parts, fixed crash on startup.">Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске.</div>-->
+                </div>
+                <div class="changelog-item">
+                    <div class="version" data-ru="Версия 3.6.2 — 18 мая 2025" data-en="Version 3.6.2 — May 18, 2025">Версия 3.6.2 — 18 мая 2025</div>
+                    <!--<div class="text" data-ru="Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске." data-en="Improved graphics, added new tuning parts, fixed crash on startup.">Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске.</div>-->
+                </div>
+                <div class="changelog-item">
+                    <div class="version" data-ru="Версия 3.6.1 — 9 мая 2025" data-en="Version 3.6.1 — May 9, 2025">Версия 3.6.1 — 9 мая 2025</div>
+                    <!--<div class="text" data-ru="Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске." data-en="Improved graphics, added new tuning parts, fixed crash on startup.">Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске.</div>-->
+                </div>
+                <div class="changelog-item">
+                    <div class="version" data-ru="Версия 3.6.0 — 20 апреля 2025" data-en="Version 3.6.0 — April 20, 2025">Версия 3.6.0 — 20 апреля 2025</div>
+                    <!--<div class="text" data-ru="Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске." data-en="Improved graphics, added new tuning parts, fixed crash on startup.">Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске.</div>-->
+                </div>
+                <div class="changelog-item">
+                    <div class="version" data-ru="Версия 3.5.2 — 23 февраля 2025" data-en="Version 3.5.2 — February 23, 2025">Версия 3.5.2 — 23 февраля 2025</div>
+                    <!--<div class="text" data-ru="Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске." data-en="Improved graphics, added new tuning parts, fixed crash on startup.">Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске.</div>-->
+                </div>
+                <div class="changelog-item">
+                    <div class="version" data-ru="Версия 3.5.1 — 16 февраля 2025" data-en="Version 3.5.1 — February 16, 2025">Версия 3.5.1 — 16 февраля 2025</div>
+                    <!--<div class="text" data-ru="Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске." data-en="Improved graphics, added new tuning parts, fixed crash on startup.">Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске.</div>-->
+                </div>
+                <div class="changelog-item">
+                    <div class="version" data-ru="Версия 3.5.0 — 15 февраля 2025" data-en="Version 3.5.0 — February 15, 2025">Версия 3.5.0 — 15 февраля 2025</div>
+                    <!--<div class="text" data-ru="Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске." data-en="Improved graphics, added new tuning parts, fixed crash on startup.">Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске.</div>-->
+                </div>
+                <div class="changelog-item">
+                    <div class="version" data-ru="Версия 3.4.4 — 18 января 2025" data-en="Version 3.4.4 — January 18, 2025">Версия 3.4.4 — 18 января 2025</div>
+                    <!--<div class="text" data-ru="Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске." data-en="Improved graphics, added new tuning parts, fixed crash on startup.">Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске.</div>-->
+                </div>
+                <div class="changelog-item">
+                    <div class="version" data-ru="Версия 3.4.3 — 8 января 2025" data-en="Version 3.4.3 — January 8, 2025">Версия 3.4.3 — 8 января 2025</div>
+                    <!--<div class="text" data-ru="Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске." data-en="Improved graphics, added new tuning parts, fixed crash on startup.">Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске.</div>-->
+                </div>
+                <div class="changelog-item">
+                    <div class="version" data-ru="Версия 3.4.2 — 4 января 2025" data-en="Version 3.4.2 — January 4, 2025">Версия 3.4.2 — 4 января 2025</div>
+                    <!--<div class="text" data-ru="Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске." data-en="Improved graphics, added new tuning parts, fixed crash on startup.">Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске.</div>-->
+                </div>
+                <div class="changelog-item">
+                    <div class="version" data-ru="Версия 3.4.1 — 3 января 2025" data-en="Version 3.4.1 — January 3, 2025">Версия 3.4.1 — 3 января 2025</div>
+                    <!--<div class="text" data-ru="Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске." data-en="Improved graphics, added new tuning parts, fixed crash on startup.">Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске.</div>-->
+                </div>
+                <div class="changelog-item">
+                    <div class="version" data-ru="Версия 3.4.0 — 2 января 2025" data-en="Version 3.4.0 — January 2, 2025">Версия 3.4.0 — 2 января 2025</div>
+                    <!--<div class="text" data-ru="Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске." data-en="Improved graphics, added new tuning parts, fixed crash on startup.">Улучшена графика, добавлены новые детали для тюнинга, исправлен вылет при запуске.</div>-->
+                </div>
+            </div>
+        </main>
     </div>
-  </div>
 
-  <div class="download-section">
-      <a class="download-btn" href="https://drive.google.com/uc?export=download&id=1UCEv4H7r5H2enKBvTmoohfIycwirXhp9" download>Download the game</a>
-      <!--<a class="download-btn" href="" download>Download the game</a> -->
-  </div>
+    <script>
+        let currentLang = 'ru';
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-switch button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.lang-switch button').forEach(btn => {
+                if (btn.textContent.includes(lang.toUpperCase())) btn.classList.add('active');
+            });
+            document.querySelectorAll('[data-ru][data-en]').forEach(el => {
+                const text = el.getAttribute('data-' + lang);
+                if (text) {
+                    if (text.includes('<')) { el.innerHTML = text; }
+                    else { el.textContent = text; }
+                }
+            });
+            localStorage.setItem('gggames-lang', lang);
+        }
+
+        const savedLang = localStorage.getItem('gggames-lang');
+        if (savedLang && savedLang !== 'ru') { setLang(savedLang); }
+
+        function changeMain(element, type) {
+            const mainDisplay = document.getElementById('mainDisplay');
+            document.querySelectorAll('.thumbnails img, .video-thumb').forEach(el => el.classList.remove('active-thumb'));
+            element.classList.add('active-thumb');
+
+            if (type === 'image') {
+                mainDisplay.innerHTML = `
+                    <img src="${element.src}" alt="Скриншот" id="mainImg">
+                    <div class="game-title-overlay">
+                        <h2>My Satsuma</h2>
+                    </div>
+                `;
+            } else if (type === 'video') {
+                const videoId = element.dataset.videoId;
+                mainDisplay.innerHTML = `
+                    <div style="position: relative; padding-top: 56.25%;">
+                        <iframe 
+                            src="https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0"
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 8px;" 
+                            allowfullscreen 
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="game-title-overlay" style="pointer-events: none;">
+                        <h2>My Satsuma</h2>
+                    </div>
+                `;
+            }
+        }
+    </script>
+
 </body>
 </html>
-
