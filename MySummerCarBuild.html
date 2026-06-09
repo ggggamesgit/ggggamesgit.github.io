@@ -1,0 +1,616 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Summer Car Mobile 179 Build — GGGames</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1b2838;
+            color: #c7d5e0;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #171a21;
+            padding: 12px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #2a475e;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #c7d5e0;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo:hover { color: #fff; }
+
+        .logo-img {
+            height: 52px;
+            width: auto;
+            flex-shrink: 0;
+        }
+
+        .back-link {
+            color: #8f98a0;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: background 0.15s, color 0.15s;
+            background: #1b2838;
+        }
+
+        .back-link:hover { background: #2a475e; color: #66c0f4; }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .socials {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .socials a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 6px;
+            background: #1b2838;
+            transition: background 0.2s, transform 0.2s;
+            text-decoration: none;
+        }
+
+        .socials a:hover {
+            background: #2a475e;
+            transform: translateY(-2px);
+        }
+
+        .socials a img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 2px;
+            background: #1b2838;
+            border-radius: 6px;
+            padding: 3px;
+        }
+
+        .lang-switch button {
+            background: transparent;
+            border: none;
+            color: #8f98a0;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .lang-switch button.active { background: #2a475e; color: #66c0f4; }
+        .lang-switch button:hover { color: #fff; }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .game-details {
+            background: #16202d;
+            border-radius: 6px;
+            padding: 30px;
+        }
+
+        .game-details h1 {
+            font-size: 32px;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .game-details .developer {
+            color: #66c0f4;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .main-screenshot {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            border: 1px solid #2a475e;
+        }
+
+        .main-screenshot img {
+            width: 100%;
+            display: block;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+
+        .main-screenshot .game-title-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 30px 24px 18px;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
+            width: 100%;
+        }
+
+        .main-screenshot .game-title-overlay h2 {
+            color: #fff;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        }
+
+        .thumbnails {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .thumbnails img {
+            width: calc(20% - 8px);
+            min-width: 100px;
+            flex: 1;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            object-fit: cover;
+            aspect-ratio: 16/9;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .thumbnails img:hover { border-color: #66c0f4; transform: translateY(-2px); }
+        .thumbnails img.active-thumb { border-color: #66c0f4; box-shadow: 0 0 12px rgba(102, 192, 244, 0.4); }
+
+        .description {
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 15px;
+            color: #acb4bc;
+        }
+
+        .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .tag {
+            background: #2a475e;
+            padding: 4px 12px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: #66c0f4;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .info-item {
+            background: #1b2838;
+            padding: 14px;
+            border-radius: 6px;
+        }
+
+        .info-item .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #8f98a0;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        .info-item .value {
+            font-size: 14px;
+            color: #c7d5e0;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #5c7e10, #4a6b0d);
+            color: #d2efa9;
+            padding: 12px 30px;
+            font-size: 17px;
+            font-weight: 600;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+            margin-bottom: 30px;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(135deg, #6d9216, #5a7e11);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 14px;
+            border-bottom: 1px solid #2a475e;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+
+        .section-title:first-of-type { margin-top: 0; }
+
+        .changelog-item {
+            background: #1b2838;
+            padding: 14px 18px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border-left: 3px solid #66c0f4;
+        }
+
+        .changelog-item .version {
+            font-weight: 600;
+            color: #66c0f4;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .changelog-item .text {
+            font-size: 14px;
+            color: #acb4bc;
+            line-height: 1.5;
+        }
+
+        .features-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .features-list li {
+            background: #1b2838;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #acb4bc;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features-list li::before {
+            content: "✔";
+            color: #66c0f4;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .system-req-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .system-req-col {
+            background: #1b2838;
+            padding: 16px;
+            border-radius: 6px;
+        }
+
+        .system-req-col h4 {
+            color: #8f98a0;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .system-req-col ul {
+            list-style: none;
+            font-size: 13px;
+            color: #acb4bc;
+            line-height: 1.8;
+        }
+
+        .system-req-col ul li span {
+            color: #8f98a0;
+        }
+
+        .video-thumb {
+            width: calc(20% - 8px);
+            min-width: 100px;
+            flex: 1;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            aspect-ratio: 16/9;
+            transition: border-color 0.2s, transform 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-thumb:hover { border-color: #66c0f4; transform: translateY(-2px); }
+        .video-thumb.active-thumb { border-color: #66c0f4; box-shadow: 0 0 12px rgba(102, 192, 244, 0.4); }
+
+        .video-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            pointer-events: none;
+            transition: background 0.2s;
+        }
+
+        .video-thumb:hover .play-icon { background: rgba(0, 0, 0, 0.85); }
+
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .game-details { padding: 16px; }
+            .game-details h1 { font-size: 22px; }
+            
+            .thumbnails {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            
+            .thumbnails img {
+                width: 100%;
+                min-width: auto;
+                aspect-ratio: 16/9;
+            }
+            
+            .video-thumb {
+                width: 100%;
+                min-width: auto;
+                aspect-ratio: 16/9;
+            }
+            
+            .main-screenshot .game-title-overlay h2 { font-size: 18px; }
+            .header { padding: 10px 14px; }
+            .logo { font-size: 20px; }
+            .logo-img { height: 36px; }
+            .socials a { width: 28px; height: 28px; }
+            .socials a img { width: 16px; height: 16px; }
+            .play-icon { width: 30px; height: 30px; font-size: 14px; }
+            .system-req-grid { grid-template-columns: 1fr; }
+            .features-list { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: 1fr 1fr; }
+            .back-link { font-size: 12px; padding: 6px 10px; }
+            .header-left { gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-left">
+            <a class="logo">
+                <img src="logo/logoMSCBuild.png" alt="GG Games" class="logo-img">
+                GGGames
+            </a>
+            <a href="index.html" class="back-link" data-ru="← В каталог" data-en="← Back to catalog">← В каталог</a>
+        </div>
+        <div class="header-right">
+            <div class="lang-switch">
+                <button class="active" onclick="setLang('ru')">🇷🇺 RU</button>
+                <button onclick="setLang('en')">🇬🇧 EN</button>
+            </div>
+            <div class="socials">
+                <a href="https://youtube.com/@gg_games-p3f" target="_blank" title="YouTube">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg" alt="YouTube" style="filter: invert(1);">
+                </a>
+                <a href="https://t.me/GGTechGamesTG" target="_blank" title="Telegram">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/telegram.svg" alt="Telegram" style="filter: invert(1);">
+                </a>
+                <a href="https://tiktok.com/@gg.games38" target="_blank" title="TikTok">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/tiktok.svg" alt="TikTok" style="filter: invert(1);">
+                </a>
+                <a href="https://trashbox.ru/users/ggtechgames/" target="_blank" title="TrashBox">
+                    <img src="logo/TrashBox.webp" alt="TrashBox">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <main class="game-details">
+            <h1>My Summer Car Mobile 179 Build</h1>
+            <p class="developer" data-ru="Разработчик: GGGames/Amistech" data-en="Developer: GGGames/Amistech">Разработчик: GGGames/Amistech</p>
+
+            <!-- Главный экран бульк -->
+            <div class="main-screenshot" id="mainDisplay">
+                <img src="image_mysummercarBuild/image4.jpg" alt="My Summer Car Mobile 179 Build" id="mainImg">
+                <div class="game-title-overlay">
+                    <h2>My Summer Car Mobile 179 Build</h2>
+                </div>
+            </div>
+
+            <!-- Фотографии и видео -->
+            <div class="thumbnails">
+                <div class="video-thumb" onclick="changeMain(this, 'video')" data-type="video" data-video-id="ZzPdPYtqBt0">
+                    <img src="https://img.youtube.com/vi/ZzPdPYtqBt0/mqdefault.jpg" alt="Видео">
+                    <div class="play-icon">▶</div>
+                </div>
+                <img src="image_mysummercarBuild/image4.jpg" onclick="changeMain(this, 'image')" class="active-thumb" data-type="image">
+                <img src="image_mysummercarBuild/image2.jpg" onclick="changeMain(this, 'image')" data-type="image">
+                <img src="image_mysummercarBuild/image1.jpg" onclick="changeMain(this, 'image')" data-type="image">
+                <img src="image_mysummercarBuild/image3.jpg" onclick="changeMain(this, 'image')" data-type="image">
+            </div>
+
+            <!-- Описание -->
+            <p class="description" data-ru="MY SUMMER CAR — это лучший симулятор владения, сборки, ремонта, тюнинга, обслуживания автомобиля И выживания в условиях перманентной смерти. Вы начинаете игру с сотнями отдельных от друг друга деталей и собираете автомобиль с двигателем. Вам нужно обслуживать не только машину, но и себя. Сосиски, пиво и сон вполне подойдут." data-en="MY SUMMER CAR is the ultimate car owning, building, fixing, tuning, maintenance AND permadeath life survival simulator. You start the game with hundreds of loose parts and assemble both car and engine. Not only you need to maintain your car, but yourself as well. Sausages, beer and sleeping will do just fine.">MY SUMMER CAR — это лучший симулятор владения, сборки, ремонта, тюнинга, обслуживания автомобиля И выживания в условиях перманентной смерти. Вы начинаете игру с сотнями отдельных от друг друга деталей и собираете автомобиль с двигателем. Вам нужно обслуживать не только машину, но и себя. Сосиски, пиво и сон вполне подойдут.</p>
+
+            <!-- Информация -->
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label" data-ru="Жанр" data-en="Genre">Жанр</div>
+                    <div class="value" data-ru="Симулятор, Выживание" data-en="Simulator, Survival">Симулятор, Выживание</div>
+                </div>
+                <div class="info-item">
+                    <div class="label" data-ru="Платформа" data-en="Platform">Платформа</div>
+                    <div class="value" data-ru="Android" data-en="Android">Android</div>
+                </div>
+                <div class="info-item">
+                    <div class="label" data-ru="Версия" data-en="Version">Версия</div>
+                    <div class="value">Port1.2MSC179Build</div>
+                </div>
+                <div class="info-item">
+                    <div class="label" data-ru="Язык" data-en="Language">Язык</div>
+                    <div class="value">English, Finnish</div>
+                </div>
+            </div>
+
+            <!-- Теги -->
+            <div class="tags"> 
+                <span class="tag" data-ru="Симулятор" data-en="Simulator">Симулятор</span>
+                <span class="tag" data-ru="Автосимулятор" data-en="Car simulator">Автосимулятор</span>
+                <span class="tag" data-ru="Открытый мир" data-en="Open world">Открытый мир</span>
+                <span class="tag" data-ru="Вождение" data-en="Driving">Вождение</span>
+                <span class="tag" data-ru="Выживание" data-en="Survival">Выживание</span>
+            </div>
+
+            <!-- сис треб -->
+            <h3 class="section-title" data-ru="📱 Системные требования" data-en="📱 System Requirements">📱 Системные требования</h3>
+            <div class="system-req-grid">
+                <div class="system-req-col">
+                    <h4 data-ru="Минимальные" data-en="Minimum">Минимальные</h4>
+                    <ul>
+                        <li><span data-ru="CPU:" data-en="CPU:">CPU:</span> Snapdragon 685</li>
+                        <li><span data-ru="ARM:" data-en="ARM:">ARM:</span> ARMv7/ARMv8</li>
+                        <li><span data-ru="ОЗУ:" data-en="RAM:">ОЗУ:</span> 3 GB</li>
+                        <li><span data-ru="Память:" data-en="Storage:">Память:</span> 250 MB(ARMv7) / 500 MB(ARMv8)</li>
+                    </ul>
+                </div>
+                <div class="system-req-col">
+                    <h4 data-ru="Рекомендуемые" data-en="Recommended">Рекомендуемые</h4>
+                    <ul>
+                        <li><span data-ru="CPU:" data-en="CPU:">CPU:</span> Snapdragon 695</li>
+                        <li><span data-ru="ARM:" data-en="ARM:">ARM:</span> ARMv7/ARMv8</li>
+                        <li><span data-ru="ОЗУ:" data-en="RAM:">ОЗУ:</span> 6 GB</li>
+                        <li><span data-ru="Память:" data-en="Storage:">Память:</span> 250 MB(ARMv7) / 500 MB(ARMv8)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Скачать -->
+             <a href="https://t.me/GGTechGamesTG/1004" class="download-btn" download data-ru="⬇ Скачать (Telegram) (ARMv7)" data-en="⬇ Download (Telegram) (ARMv7)">⬇ Скачать (Telegram) (ARMv7)</a>
+            <a href="https://t.me/GGTechGamesTG/1086" class="download-btn" download data-ru="⬇ Скачать (Telegram) (ARMv8)" data-en="⬇ Download (Telegram) (ARMv8)">⬇ Скачать (Telegram) (ARMv8)</a>
+
+        </main>
+    </div>
+
+    <script>
+        let currentLang = 'ru';
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-switch button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.lang-switch button').forEach(btn => {
+                if (btn.textContent.includes(lang.toUpperCase())) btn.classList.add('active');
+            });
+            document.querySelectorAll('[data-ru][data-en]').forEach(el => {
+                const text = el.getAttribute('data-' + lang);
+                if (text) {
+                    if (text.includes('<')) { el.innerHTML = text; }
+                    else { el.textContent = text; }
+                }
+            });
+            localStorage.setItem('gggames-lang', lang);
+        }
+
+        const savedLang = localStorage.getItem('gggames-lang');
+        if (savedLang && savedLang !== 'ru') { setLang(savedLang); }
+
+        function changeMain(element, type) {
+            const mainDisplay = document.getElementById('mainDisplay');
+            document.querySelectorAll('.thumbnails img, .video-thumb').forEach(el => el.classList.remove('active-thumb'));
+            element.classList.add('active-thumb');
+
+            if (type === 'image') {
+                mainDisplay.innerHTML = `
+                    <img src="${element.src}" alt="Скриншот" id="mainImg">
+                    <div class="game-title-overlay">
+                        <h2>My Summer Car Mobile 179 Build</h2>
+                    </div>
+                `;
+            } else if (type === 'video') {
+                const videoId = element.dataset.videoId;
+                mainDisplay.innerHTML = `
+                    <div style="position: relative; padding-top: 56.25%;">
+                        <iframe 
+                            src="https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0"
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 8px;" 
+                            allowfullscreen 
+                            allow="autoplay; encrypted-media">
+                        </iframe>
+                    </div>
+                    <div class="game-title-overlay" style="pointer-events: none;">
+                        <h2>My Summer Car Mobile 179 Build</h2>
+                    </div>
+                `;
+            }
+        }
+    </script>
+
+</body>
+</html>
