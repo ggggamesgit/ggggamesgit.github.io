@@ -1,47 +1,519 @@
-<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GG Games</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GGGames</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1b2838;
+            color: #c7d5e0;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #171a21;
+            padding: 12px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #2a475e;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #c7d5e0;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo-img {
+            height: 52px;
+            width: auto;
+            flex-shrink: 0;
+        }
+
+        .logo:hover { color: #fff; }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #66c0f4, #2a475e);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #fff;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .socials {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .socials a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 6px;
+            background: #1b2838;
+            transition: background 0.2s, transform 0.2s;
+            text-decoration: none;
+        }
+
+        .socials a:hover {
+            background: #2a475e;
+            transform: translateY(-2px);
+        }
+
+        .socials a img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        /* ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ */
+        .lang-switch {
+            display: flex;
+            gap: 2px;
+            background: #1b2838;
+            border-radius: 6px;
+            padding: 3px;
+        }
+
+        .lang-switch button {
+            background: transparent;
+            border: none;
+            color: #8f98a0;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .lang-switch button.active {
+            background: #2a475e;
+            color: #66c0f4;
+        }
+
+        .lang-switch button:hover { color: #fff; }
+
+        .container {
+            display: flex;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 20px;
+            min-height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            width: 280px;
+            min-width: 240px;
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .sidebar-block {
+            background: #16202d;
+            border-radius: 6px;
+            padding: 10px;
+        }
+
+        .sidebar-block h2 {
+            font-size: 13px;
+            text-transform: uppercase;
+            color: #8f98a0;
+            padding: 10px 12px 6px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.15s;
+            color: #c7d5e0;
+            text-decoration: none;
+        }
+
+        .sidebar-item:hover { background: #2a475e; }
+        .sidebar-item.active { background: #2a475e; border-left: 3px solid #66c0f4; }
+
+        .sidebar-item img {
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .sidebar-item .icon-placeholder {
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            background: #2a475e;
+            color: #66c0f4;
+            flex-shrink: 0;
+        }
+
+        .sidebar-item span {
+            font-size: 14px;
+        }
+
+        .content-area { flex: 1; min-width: 0; }
+
+        .catalog-page {
+            background: #16202d;
+            border-radius: 6px;
+            padding: 30px;
+            display: none;
+        }
+
+        .catalog-page.active { display: block; }
+
+        .catalog-page h1 {
+            font-size: 28px;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .catalog-page .subtitle {
+            color: #8f98a0;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .game-card {
+            background: #1b2838;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            color: #c7d5e0;
+            display: block;
+        }
+
+        .game-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+
+        .game-card img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+
+        .game-card-info { padding: 16px; }
+        .game-card-info h3 { color: #fff; font-size: 18px; margin-bottom: 6px; }
+
+        .game-card-info .tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .game-card-info .tag {
+            background: #2a475e;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            color: #66c0f4;
+        }
+
+        .game-card-info .desc {
+            font-size: 13px;
+            color: #8f98a0;
+            line-height: 1.5;
+        }
+
+        .extra-page {
+            background: #16202d;
+            border-radius: 6px;
+            padding: 30px;
+            display: none;
+        }
+
+        .extra-page.active { display: block; }
+
+        .extra-page h1 { font-size: 28px; color: #fff; margin-bottom: 8px; }
+        .extra-page .subtitle { color: #8f98a0; font-size: 14px; margin-bottom: 24px; }
+
+        .guide-card {
+            background: #1b2838;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 3px solid #66c0f4;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .guide-card:hover { background: #1e3044; transform: translateX(4px); }
+        .guide-card h3 { color: #fff; font-size: 18px; margin-bottom: 6px; }
+        .guide-card p { color: #acb4bc; font-size: 14px; line-height: 1.5; }
+        .guide-card .guide-icon { font-size: 28px; margin-bottom: 10px; }
+
+        .guide-content {
+            display: none;
+            background: #1b2838;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border-left: 3px solid #66c0f4;
+        }
+
+        .guide-content.open { display: block; }
+        .guide-content h3 { color: #fff; font-size: 20px; margin-bottom: 14px; }
+        .guide-content p, .guide-content li { color: #acb4bc; font-size: 14px; line-height: 1.8; }
+        .guide-content ul, .guide-content ol { margin: 10px 0 10px 20px; }
+        .guide-content .back-btn {
+            display: inline-block;
+            color: #66c0f4;
+            cursor: pointer;
+            margin-top: 16px;
+            font-size: 14px;
+            text-decoration: underline;
+        }
+        .guide-content .back-btn:hover { color: #fff; }
+
+        @media (max-width: 768px) {
+            .container { flex-direction: column; padding: 10px; }
+            .sidebar { width: 100%; position: static; flex-direction: row; gap: 8px; }
+            .sidebar-block { flex: 1; min-width: 0; }
+            .sidebar-block h2 { font-size: 11px; padding: 6px 8px 4px; }
+            .sidebar-item { padding: 8px 8px; border-radius: 6px; }
+            .sidebar-item img, .sidebar-item .icon-placeholder { width: 24px; height: 24px; font-size: 14px; }
+            .sidebar-item span { font-size: 12px; }
+            .games-grid { grid-template-columns: 1fr; }
+            .header { padding: 10px 14px; }
+            .logo { font-size: 20px; }
+            .logo-gggames { padding: 8px 8px; border-radius: 6px; }
+            .logo-icon { width: 32px; height: 32px; font-size: 16px; }
+            .socials a { font-size: 13px; margin-left: 10px; }
+            .header-right { gap: 8px; }
+        }
+    </style>
 </head>
 <body>
-  <div class="blur-panel">
-    <h1>All projects "GG Games"</h1>
-  </div>
-  
-	<div class="choose-container">
-		<button class="choose-btn" onclick="openModal()">Choose the Game</button>
-	</div>
 
-	<div id="gameModal" class="modal">
-	  <div class="modal-content">
-		<h2>Select a Game</h2>
-		<a href="mysatsuma.html" class="game-option">My Satsuma (Paused)</a>
-		<a href="MySummerCar.html" class="game-option">My Summer Car Mobile</a>
-		<a href="MySummerCarBuild.html" class="game-option">My Summer Car Mobile 179 Build</a>
-		<button class="game-option">???</button>
-	  </div>
-	</div>
+    <header class="header">
+        <a class="logo">
+            <img src="logo/gggames_logo.png" alt="GG Games" class="logo-img">
+            GGGames
+        </a>
+        <div class="header-right">
+            <div class="lang-switch">
+                <button class="active" onclick="setLang('ru')">🇷🇺 RU</button>
+                <button onclick="setLang('en')">🇬🇧 EN</button>
+            </div>
+            <div class="socials">
+                <a href="https://youtube.com/@gg_games-p3f" target="_blank" title="YouTube">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg" alt="YouTube" style="filter: invert(1);">
+                </a>
+                <a href="https://t.me/GGTechGamesTG" target="_blank" title="Telegram">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/telegram.svg" alt="Telegram" style="filter: invert(1);">
+                </a>
+                <a href="https://tiktok.com/@gg.games38" target="_blank" title="TikTok">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/tiktok.svg" alt="TikTok" style="filter: invert(1);">
+                </a>
+                <a href="https://trashbox.ru/users/ggtechgames/" target="_blank" title="TrashBox">
+                    <img src="logo/TrashBox.webp" alt="TrashBox">
+                </a>
+            </div>
+        </div>
+    </header>
 
-<script>
-  const modal = document.getElementById('gameModal');
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-block">
+                <h2 data-ru="Игры" data-en="Games">Игры</h2>
+                <a href="mysatsuma.html" class="sidebar-item">
+                    <img src="logo/logoMS.png" alt="My Satsuma">
+                    <span>My Satsuma</span>
+                </a>
+                <a href="MySummerCar.html" class="sidebar-item">
+                    <img src="logo/logoMSC.png" alt="My Summer Car Mobile">
+                    <span>My Summer Car Mobile</span>
+                </a>
+                <a href="MySummerCarBuild.html" class="sidebar-item">
+                    <img src="logo/logoMSCBuild.png" alt="My Summer Car Mobile 179 Build">
+                    <span>My Summer Car Mobile 179 Build</span>
+                </a>
+            </div>
 
-  function openModal() {
-    modal.classList.add('visible');
-  }
+            <!--<div class="sidebar-block">
+                <h2 data-ru="📘 Дополнительно" data-en="📘 Extra">📘 Дополнительно</h2>
+                <a href="#" class="sidebar-item" data-section="extra" data-extra="mods">
+                    <div class="icon-placeholder">📦</div>
+                    <span data-ru="Как установить моды" data-en="How to Install Mods">Как установить моды</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="extra" data-extra="bugfix">
+                    <div class="icon-placeholder">🔧</div>
+                    <span data-ru="Решение проблем" data-en="Troubleshooting">Решение проблем</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="extra" data-extra="faq">
+                    <div class="icon-placeholder">❓</div>
+                    <span data-ru="Частые вопросы" data-en="FAQ">Частые вопросы</span>
+                </a>
+            </div>-->
+        </aside>
 
-  function closeModal() {
-    modal.classList.remove('visible');
-  }
+        <main class="content-area">
 
-  window.addEventListener('click', function (e) {
-    if (e.target === modal) {
-      closeModal();
-    }
-  });
-</script>
+            <!-- Каталог -->
+            <div class="catalog-page active" id="catalogPage">
+                <h1 data-ru="Игры" data-en="Games">Игры</h1>
+                <p class="subtitle" data-ru="Выбери игру, чтобы узнать подробнее" data-en="Choose a game to learn more">Выбери игру, чтобы узнать подробнее</p>
+                <div class="games-grid">
+                    <a href="mysatsuma.html" class="game-card">
+                        <img src="games/image_mysatsuma/image6.jpg" alt="My Satsuma">
+                        <div class="game-card-info">
+                            <h3>My Satsuma</h3>
+                            <div class="tags">
+                                <span class="tag" data-ru="Симулятор" data-en="Simulator">Симулятор</span>
+                                <span class="tag" data-ru="Автосимулятор" data-en="Car simulator">Автосимулятор</span>
+                                <span class="tag" data-ru="Открытый мир" data-en="Open world">Открытый мир</span>
+                                <span class="tag" data-ru="Вождение" data-en="Driving">Вождение</span>
+                            </div>
+                            <p class="desc" data-ru="Симулятор сборки автомобиля." data-en="Car assembly simulator.">Симулятор сборки автомобиля.</p>
+                        </div>
+                    </a>
+                    <a href="MySummerCar.html" class="game-card">
+                        <img src="image_mysummercar/image6.jpg" alt="My Summer Car Mobile">
+                        <div class="game-card-info">
+                            <h3>My Summer Car Mobile</h3>
+                            <div class="tags">
+                                <span class="tag" data-ru="Симулятор" data-en="Simulator">Симулятор</span>
+                                <span class="tag" data-ru="Автосимулятор" data-en="Car simulator">Автосимулятор</span>
+                                <span class="tag" data-ru="Открытый мир" data-en="Open world">Открытый мир</span>
+                                <span class="tag" data-ru="Вождение" data-en="Driving">Вождение</span>
+                            </div>
+                            <p class="desc" data-ru="Симулятор сборки автомобиля." data-en="Car assembly simulator.">Симулятор сборки автомобиля.</p>
+                        </div>
+                    </a>
+                    <a href="MySummerCarBuild.html" class="game-card">
+                        <img src="image_mysummercarBuild/image4.jpg" alt="My Summer Car Mobile 179 Build">
+                        <div class="game-card-info">
+                            <h3>My Summer Car Mobile 179 Build</h3>
+                            <div class="tags">
+                                <span class="tag" data-ru="Симулятор" data-en="Simulator">Симулятор</span>
+                                <span class="tag" data-ru="Автосимулятор" data-en="Car simulator">Автосимулятор</span>
+                                <span class="tag" data-ru="Открытый мир" data-en="Open world">Открытый мир</span>
+                                <span class="tag" data-ru="Вождение" data-en="Driving">Вождение</span>
+                            </div>
+                            <p class="desc" data-ru="Симулятор сборки автомобиля." data-en="Car assembly simulator.">Симулятор сборки автомобиля.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let currentLang = 'ru';
+
+        function setLang(lang) {
+            currentLang = lang;
+            
+            document.querySelectorAll('.lang-switch button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.lang-switch button').forEach(btn => {
+                if (btn.textContent.includes(lang.toUpperCase())) btn.classList.add('active');
+            });
+
+            document.querySelectorAll('[data-ru][data-en]').forEach(el => {
+                const text = el.getAttribute('data-' + lang);
+                if (text) {
+                    if (text.includes('<')) {
+                        el.innerHTML = text;
+                    } else {
+                        el.textContent = text;
+                    }
+                }
+            });
+
+            localStorage.setItem('gggames-lang', lang);
+        }
+
+        const savedLang = localStorage.getItem('gggames-lang');
+        if (savedLang && savedLang !== 'ru') {
+            setLang(savedLang);
+        }
+
+        document.querySelectorAll('.sidebar-item[data-section="extra"]').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const extra = this.dataset.extra;
+
+                document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+
+                document.querySelectorAll('.catalog-page').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('.extra-page').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('.guide-content').forEach(g => g.classList.remove('open'));
+
+                if (['mods','bugfix','faq','discord'].includes(extra)) {
+                    document.getElementById('guide-' + extra).classList.add('open');
+                    document.getElementById('extra-main').classList.add('active');
+                } else {
+                    document.getElementById('extra-main').classList.add('active');
+                }
+            });
+        });
+
+        function openGuide(id) {
+            document.getElementById('extra-main').classList.remove('active');
+            document.querySelectorAll('.guide-content').forEach(g => g.classList.remove('open'));
+            document.getElementById('guide-' + id).classList.add('open');
+            document.getElementById('extra-main').classList.add('active');
+        }
+
+        function closeGuide() {
+            document.querySelectorAll('.guide-content').forEach(g => g.classList.remove('open'));
+            document.getElementById('extra-main').classList.add('active');
+        }
+    </script>
 
 </body>
 </html>
